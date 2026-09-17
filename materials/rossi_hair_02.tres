@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bdvi8cv532rlx" path="res://textures/T_actor_common_hair_08_RS.png" id="6_rs"]
 [ext_resource type="Texture2D" uid="uid://6bj2vva6a6e" path="res://textures/T_actor_common_hairst_01_ST.png" id="7_st"]
 [ext_resource type="Texture2D" uid="uid://cbm0ssfxke2uo" path="res://textures/T_actor_common_hairline_03_M.png" id="9_hairline"]
-[ext_resource type="Material" path="res://materials/rossi_outline_hair_02.tres" id="10_outline"]
+[ext_resource type="Material" uid="uid://bhboered2s27w" path="res://materials/rossi_outline_hair_02.tres" id="10_outline"]
 
 [resource]
 render_priority = 0
@@ -53,3 +53,8 @@ shader_parameter/specular_strength = 1.2
 shader_parameter/reflectivity_strength = 1.0
 shader_parameter/shadow_strength = 0.9
 shader_parameter/shadow_floor = 0.18
+shader_parameter/shadow_center = 0.5
+shader_parameter/shadow_softness = 0.16
+shader_parameter/rim_color = Color(0.55, 0.7, 1, 1)
+shader_parameter/rim_strength = 0.14
+shader_parameter/rim_power = 3.0

@@ -54,6 +54,11 @@ uniform float specular_strength : hint_range(0.0, 8.0, 0.01) = 1.8;
 uniform float reflectivity_strength : hint_range(0.0, 2.0, 0.01) = 1.0;
 uniform float shadow_strength : hint_range(0.0, 1.0, 0.01) = 0.9;
 uniform float shadow_floor : hint_range(0.0, 1.0, 0.01) = 0.18;
+uniform float shadow_center : hint_range(0.0, 1.0, 0.01) = 0.5;
+uniform float shadow_softness : hint_range(0.01, 0.5, 0.01) = 0.16;
+uniform vec4 rim_color : source_color = vec4(0.55, 0.7, 1.0, 1.0);
+uniform float rim_strength : hint_range(0.0, 2.0, 0.01) = 0.18;
+uniform float rim_power : hint_range(0.5, 8.0, 0.1) = 2.8;
 
 varying vec3 dark_to_light_ratio;
 varying vec3 darkest_to_light_ratio;
@@ -184,7 +189,12 @@ void light() {
 	float nof_ramp = sample_diff_ramp(diffuse_ramp_texture, nof_coordinate).a;
 	float nof_weight = mix(1.0, nof_ramp, view_darkening_strength);
 
-	float scene_shadow = LIGHT_IS_DIRECTIONAL ? clamp(ATTENUATION, 0.0, 1.0) : 1.0;
+	float raw_scene_shadow = LIGHT_IS_DIRECTIONAL ? clamp(ATTENUATION, 0.0, 1.0) : 1.0;
+	float scene_shadow = smoothstep(
+		shadow_center - shadow_softness,
+		shadow_center + shadow_softness,
+		raw_scene_shadow
+	);
 	float shadow_weight = mix(1.0, scene_shadow, shadow_strength);
 	float light_attenuation = LIGHT_IS_DIRECTIONAL
 		? mix(shadow_floor, 1.0, shadow_weight)
@@ -231,4 +241,11 @@ void light() {
 		* spec_visibility
 		* SPECULAR_AMOUNT
 		* specular_strength;
+
+	float n_dot_v = clamp(dot(normal, view_direction), 0.0, 1.0);
+	float rim_fresnel = pow(clamp(1.0 - n_dot_v, 0.0, 1.0), rim_power);
+	float rim_light = smoothstep(-0.4, 0.65, dot(normal, light_direction));
+	float rim = rim_fresnel * mix(0.35, 1.0, rim_light) * rim_strength;
+	SPECULAR_LIGHT += rim_color.rgb * rim * LIGHT_COLOR * light_attenuation
+		* specular_occlusion / PI;
 }

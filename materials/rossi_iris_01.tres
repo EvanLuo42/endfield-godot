@@ -39,3 +39,5 @@ shader_parameter/cornea_roughness = 0.12
 shader_parameter/cornea_f0 = 0.04
 shader_parameter/shadow_strength = 0.55
 shader_parameter/shadow_floor = 0.62
+shader_parameter/shadow_center = 0.5
+shader_parameter/shadow_softness = 0.24

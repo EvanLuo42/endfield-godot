@@ -55,6 +55,8 @@ uniform float cornea_roughness : hint_range(0.02, 1.0, 0.001) = 0.12;
 uniform float cornea_f0 : hint_range(0.0, 0.16, 0.001) = 0.04;
 uniform float shadow_strength : hint_range(0.0, 1.0, 0.01) = 0.55;
 uniform float shadow_floor : hint_range(0.0, 1.0, 0.01) = 0.62;
+uniform float shadow_center : hint_range(0.0, 1.0, 0.01) = 0.5;
+uniform float shadow_softness : hint_range(0.01, 0.5, 0.01) = 0.24;
 
 
 float iris_circle_mask(vec2 uv) {
@@ -147,7 +149,12 @@ void light() {
 	vec3 view_direction = normalize(VIEW);
 
 	float half_lambert = clamp(dot(normal, light_direction) * 0.5 + 0.5, 0.0, 1.0);
-	float scene_shadow = LIGHT_IS_DIRECTIONAL ? clamp(ATTENUATION, 0.0, 1.0) : 1.0;
+	float raw_scene_shadow = LIGHT_IS_DIRECTIONAL ? clamp(ATTENUATION, 0.0, 1.0) : 1.0;
+	float scene_shadow = smoothstep(
+		shadow_center - shadow_softness,
+		shadow_center + shadow_softness,
+		raw_scene_shadow
+	);
 	float shadow_weight = mix(1.0, scene_shadow, shadow_strength);
 	float light_attenuation = LIGHT_IS_DIRECTIONAL
 		? mix(shadow_floor, 1.0, shadow_weight)

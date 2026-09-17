@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dfyq550c5icw2" path="res://textures/T_actor_common_cloth_04_RD.png" id="4_h5urk"]
 [ext_resource type="Texture2D" uid="uid://ddypsle47swv0" path="res://textures/T_actor_wulfa_cloth_01_N.png" id="5_ev4dx"]
 [ext_resource type="Texture2D" uid="uid://2xjhimcv4vg4" path="res://textures/T_actor_wulfa_cloth_01_P.png" id="6_p1fr1"]
-[ext_resource type="Material" path="res://materials/rossi_outline_cloth_01.tres" id="7_outline"]
+[ext_resource type="Material" uid="uid://dl1xl6oa3tis" path="res://materials/rossi_outline_cloth_01.tres" id="7_outline"]
 
 [resource]
 render_priority = 0
@@ -34,4 +34,9 @@ shader_parameter/dielectric_f0 = 0.04
 shader_parameter/reflectivity_strength = 1.0
 shader_parameter/shadow_strength = 0.9
 shader_parameter/shadow_floor = 0.15
+shader_parameter/shadow_center = 0.5
+shader_parameter/shadow_softness = 0.18
+shader_parameter/rim_color = Color(0.62, 0.75, 1, 1)
+shader_parameter/rim_strength = 0.08
+shader_parameter/rim_power = 3.4
 shader_parameter/environment_specular = 0.05

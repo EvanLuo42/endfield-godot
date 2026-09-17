@@ -38,6 +38,11 @@ uniform float dielectric_f0 : hint_range(0.0, 0.16, 0.001) = 0.04;
 uniform float reflectivity_strength : hint_range(0.0, 2.0, 0.01) = 1.0;
 uniform float shadow_strength : hint_range(0.0, 1.0, 0.01) = 0.9;
 uniform float shadow_floor : hint_range(0.0, 1.0, 0.01) = 0.15;
+uniform float shadow_center : hint_range(0.0, 1.0, 0.01) = 0.5;
+uniform float shadow_softness : hint_range(0.01, 0.5, 0.01) = 0.18;
+uniform vec4 rim_color : source_color = vec4(0.62, 0.75, 1.0, 1.0);
+uniform float rim_strength : hint_range(0.0, 2.0, 0.01) = 0.1;
+uniform float rim_power : hint_range(0.5, 8.0, 0.1) = 3.2;
 // Godot's SPECULAR output controls environment reflections. Direct specular is
 // evaluated separately below so both responses can be art-directed.
 uniform float environment_specular : hint_range(0.0, 1.0, 0.01) = 0.2;
@@ -199,7 +204,12 @@ void light() {
 	// ATTENUATION contains the directional shadow term. Retain a small stylized
 	// floor, but allow the shadow map to reduce direct energy and select the
 	// darkest authored band. Local lights keep Godot's native attenuation.
-	float scene_shadow = LIGHT_IS_DIRECTIONAL ? clamp(ATTENUATION, 0.0, 1.0) : 1.0;
+	float raw_scene_shadow = LIGHT_IS_DIRECTIONAL ? clamp(ATTENUATION, 0.0, 1.0) : 1.0;
+	float scene_shadow = smoothstep(
+		shadow_center - shadow_softness,
+		shadow_center + shadow_softness,
+		raw_scene_shadow
+	);
 	float shadow_weight = mix(1.0, scene_shadow, shadow_strength);
 	float light_attenuation = LIGHT_IS_DIRECTIONAL
 		? mix(shadow_floor, 1.0, shadow_weight)
@@ -227,4 +237,13 @@ void light() {
 	SPECULAR_LIGHT += wrap_subsurface(
 		normal, view_direction, light_direction, ALBEDO, specular_occlusion
 	) * LIGHT_COLOR * light_attenuation / PI;
+
+	// Endfield-style directional rim: Fresnel controls width, while the wrapped
+	// light gate keeps the back edge readable without glowing through shadows.
+	float n_dot_v = clamp(dot(normal, view_direction), 0.0, 1.0);
+	float rim_fresnel = pow(clamp(1.0 - n_dot_v, 0.0, 1.0), rim_power);
+	float rim_light = smoothstep(-0.35, 0.65, dot(normal, light_direction));
+	float rim = rim_fresnel * mix(0.3, 1.0, rim_light) * rim_strength;
+	SPECULAR_LIGHT += rim_color.rgb * rim * LIGHT_COLOR * light_attenuation
+		* specular_occlusion / PI;
 }

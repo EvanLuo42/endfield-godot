@@ -72,6 +72,8 @@ uniform float rim_strength : hint_range(0.0, 2.0, 0.01) = 0.16;
 uniform float rim_power : hint_range(0.5, 8.0, 0.1) = 3.2;
 uniform float shadow_strength : hint_range(0.0, 1.0, 0.01) = 0.85;
 uniform float shadow_floor : hint_range(0.0, 1.0, 0.01) = 0.24;
+uniform float shadow_center : hint_range(0.0, 1.0, 0.01) = 0.5;
+uniform float shadow_softness : hint_range(0.01, 0.5, 0.01) = 0.22;
 
 group_uniforms Overlay;
 // Lashes only. Clip-space depth bias, faded with camera distance.
@@ -319,7 +321,12 @@ void light() {
 	float nof_ramp = sample_diff_ramp(rd_texture, nof_coordinate).a;
 	float nof_weight = mix(1.0, nof_ramp, view_darkening_strength);
 
-	float scene_shadow = LIGHT_IS_DIRECTIONAL ? clamp(ATTENUATION, 0.0, 1.0) : 1.0;
+	float raw_scene_shadow = LIGHT_IS_DIRECTIONAL ? clamp(ATTENUATION, 0.0, 1.0) : 1.0;
+	float scene_shadow = smoothstep(
+		shadow_center - shadow_softness,
+		shadow_center + shadow_softness,
+		raw_scene_shadow
+	);
 	float shadow_weight = mix(1.0, scene_shadow, shadow_strength);
 	float light_attenuation = LIGHT_IS_DIRECTIONAL
 		? mix(shadow_floor, 1.0, shadow_weight)
@@ -348,9 +355,9 @@ void light() {
 
 	float fresnel = pow(clamp(1.0 - max(dot(normal, view_direction), 0.0), 0.0, 1.0), rim_power);
 	float rim = fresnel * mix(0.25, 1.0, rim_mask) * rim_strength * face_mask;
-	float rim_light = clamp(dot(light_direction, vec3(-normal.x, 0.0, -normal.z)), 0.0, 1.0);
-	SPECULAR_LIGHT += rim_color.rgb * rim * (0.35 + 0.65 * rim_light)
-		* LIGHT_COLOR * light_attenuation / PI;
+	float rim_light = smoothstep(-0.35, 0.65, dot(normal, light_direction));
+	SPECULAR_LIGHT += rim_color.rgb * rim * mix(0.3, 1.0, rim_light)
+		* LIGHT_COLOR * light_attenuation * specular_occlusion / PI;
 
 	if (matcap_strength > 0.0 && LIGHT_IS_DIRECTIONAL) {
 		vec2 matcap_uv = spec_normal.xy * 0.5 + 0.5;

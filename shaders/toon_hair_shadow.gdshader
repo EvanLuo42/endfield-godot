@@ -14,8 +14,9 @@ uniform float shadow_strength : hint_range(0.0, 1.0, 0.01) = 0.45;
 uniform float alpha_scissor : hint_range(0.0, 1.0, 0.01) = 0.35;
 
 group_uniforms Projection;
-// Scene DirectionalLight -Z, matching scene.tscn.
-uniform vec3 light_dir_ws = vec3(-0.743, -0.491, -0.455);
+// World-space direction from the surface toward the key light. The projected
+// duplicate moves opposite this vector, i.e. along the light rays onto the face.
+uniform vec3 light_dir_ws = vec3(0.304, 0.415, 0.858);
 uniform float offset_xy : hint_range(0.0, 0.08, 0.0005) = 0.01;
 uniform float offset_z : hint_range(0.0, 0.08, 0.0005) = 0.006;
 

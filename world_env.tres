@@ -11,6 +11,6 @@ sky_material = SubResource("PanoramaSkyMaterial_3253y")
 [resource]
 background_mode = 2
 sky = SubResource("Sky_nxogm")
-ambient_light_sky_contribution = 0.0
+ambient_light_sky_contribution = 0.22
 sdfgi_enabled = true
 adjustment_brightness = 0.86

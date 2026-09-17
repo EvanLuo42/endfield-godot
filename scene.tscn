@@ -5,6 +5,8 @@
 [ext_resource type="Script" uid="uid://cw6ur2o2ca5km" path="res://shaders/endfield_tonemap_effect.gd" id="3_tonemap"]
 [ext_resource type="Script" uid="uid://db0bgft7mspp1" path="res://shaders/toon_outline_effect.gd" id="4_outline"]
 [ext_resource type="Script" uid="uid://lihpgj2a6fv" path="res://shaders/endfield_bloom_effect.gd" id="5_bloom"]
+[ext_resource type="Script" uid="uid://do1nwkxe5ycit" path="res://scripts/endfield_key_light.gd" id="6_keylight"]
+[ext_resource type="Material" uid="uid://df6xx3jmriexk" path="res://materials/rossi_hair_shadow.tres" id="7_hair_shadow"]
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_main"]
 
@@ -60,11 +62,20 @@ compositor = SubResource("Compositor_ragbo")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1651045702]
 transform = Transform3D(0.94264144, -0.13842742, 0.3037513, 0, 0.9099611, 0.41469318, -0.33380684, -0.390907, 0.85776716, 2.0534842, 2.0643005, 2.0835497)
-light_energy = 2.0
+light_color = Color(1, 0.95, 0.91, 1)
+light_energy = 1.65
 shadow_enabled = true
+shadow_bias = 0.025
+shadow_normal_bias = 0.55
+shadow_blur = 1.2
+directional_shadow_split_1 = 0.12
+directional_shadow_split_2 = 0.28
+directional_shadow_split_3 = 0.52
 directional_shadow_blend_splits = true
-directional_shadow_max_distance = 20.0
+directional_shadow_max_distance = 8.0
 directional_shadow_pancake_size = 5.0
+script = ExtResource("6_keylight")
+hair_shadow_material = ExtResource("7_hair_shadow")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1291030263]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.715, 1.015)

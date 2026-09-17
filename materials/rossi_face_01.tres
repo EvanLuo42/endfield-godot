@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://c56e2xrrwol8q" path="res://textures/T_actor_common_eyeshadow_01_M.png" id="10_es"]
 [ext_resource type="Texture2D" uid="uid://bjb801ald40ey" path="res://textures/T_actor_common_hairshadow_01_M.png" id="11_hs"]
 [ext_resource type="Texture2D" uid="uid://d0df2srhwofis" path="res://textures/T_actor_wulfa_matcap_01_D.png" id="12_mc"]
-[ext_resource type="Material" path="res://materials/rossi_outline_face.tres" id="13_outline"]
+[ext_resource type="Material" uid="uid://4mpcvxrfmsrl" path="res://materials/rossi_outline_face.tres" id="13_outline"]
 
 [resource]
 render_priority = 0
@@ -71,6 +71,8 @@ shader_parameter/rim_strength = 0.16
 shader_parameter/rim_power = 3.2
 shader_parameter/shadow_strength = 0.85
 shader_parameter/shadow_floor = 0.24
+shader_parameter/shadow_center = 0.5
+shader_parameter/shadow_softness = 0.22
 shader_parameter/hair_punch_through = 0.0
 shader_parameter/overlay_near = 1.6
 shader_parameter/overlay_far = 4.0

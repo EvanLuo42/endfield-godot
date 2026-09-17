@@ -18,6 +18,8 @@ uniform float normal_z_keep : hint_range(0.0, 1.0, 0.01) = 0.35;
 uniform float z_bias : hint_range(0.0, 0.02, 0.0001) = 0.0015;
 // Hard cap so a bad viewport can never cover the screen.
 uniform float max_ndc_offset : hint_range(0.001, 0.08, 0.001) = 0.012;
+// The importer stores averaged object-space normals in vertex color RGB.
+uniform bool use_baked_smooth_normals = true;
 
 group_uniforms Clip;
 uniform sampler2D clip_texture : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
@@ -65,7 +67,12 @@ void vertex() {
 	}
 
 	vec4 view_pos = MODELVIEW_MATRIX * vec4(VERTEX, 1.0);
-	vec3 view_n = normalize(MODELVIEW_NORMAL_MATRIX * NORMAL);
+	vec3 baked_normal = COLOR.rgb * 2.0 - 1.0;
+	bool baked_normal_valid = dot(baked_normal, baked_normal) > 0.25;
+	vec3 outline_normal = use_baked_smooth_normals && baked_normal_valid
+		? normalize(baked_normal)
+		: NORMAL;
+	vec3 view_n = normalize(MODELVIEW_NORMAL_MATRIX * outline_normal);
 	view_n.z *= normal_z_keep;
 	float n_len = length(view_n);
 	view_n = n_len > 1e-5 ? view_n / n_len : vec3(0.0, 0.0, -1.0);

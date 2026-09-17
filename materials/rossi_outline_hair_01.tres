@@ -11,6 +11,7 @@ shader_parameter/outline_width = 2.10000003129252
 shader_parameter/normal_z_keep = 0.18
 shader_parameter/z_bias = 0.0012
 shader_parameter/max_ndc_offset = 0.01
+shader_parameter/use_baked_smooth_normals = true
 shader_parameter/clip_texture = ExtResource("2_d")
 shader_parameter/use_alpha_clip = true
 shader_parameter/alpha_scissor = 0.01
