@@ -73,6 +73,12 @@ uniform float rim_power : hint_range(0.5, 8.0, 0.1) = 3.2;
 uniform float shadow_strength : hint_range(0.0, 1.0, 0.01) = 0.85;
 uniform float shadow_floor : hint_range(0.0, 1.0, 0.01) = 0.24;
 
+group_uniforms Overlay;
+// Lashes only. Clip-space depth bias, faded with camera distance.
+uniform float hair_punch_through : hint_range(0.0, 0.02, 0.0005) = 0.0;
+uniform float overlay_near : hint_range(0.2, 8.0, 0.05) = 1.6;
+uniform float overlay_far : hint_range(0.5, 20.0, 0.05) = 4.0;
+
 varying vec3 dark_to_light_ratio;
 varying vec3 darkest_to_light_ratio;
 varying vec3 head_forward_ws;
@@ -218,6 +224,21 @@ float face_sdf_lit(vec3 light_ws, vec2 uv) {
 }
 
 
+void vertex() {
+	vec3 world_normal = normalize(MODEL_NORMAL_MATRIX * NORMAL);
+	vec3 world_vertex = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	vec3 to_camera = INV_VIEW_MATRIX[3].xyz - world_vertex;
+	float cam_dist = length(to_camera);
+	to_camera = cam_dist > 1e-5 ? to_camera / cam_dist : vec3(0.0, 0.0, 1.0);
+	float facing = clamp(dot(world_normal, to_camera), 0.0, 1.0);
+	facing *= facing;
+	float dist_fade = 1.0 - smoothstep(overlay_near, max(overlay_far, overlay_near + 1e-3), cam_dist);
+	POSITION = PROJECTION_MATRIX * MODELVIEW_MATRIX * vec4(VERTEX, 1.0);
+	float closer = CLIP_SPACE_FAR == 0.0 ? 1.0 : -1.0;
+	POSITION.z += closer * hair_punch_through * facing * dist_fade * POSITION.w;
+}
+
+
 void fragment() {
 	vec4 diffuse_sample = texture(diffuse_texture, UV) * diffuse_tint;
 	vec4 feature = texture(feature_texture, UV);
@@ -243,7 +264,8 @@ void fragment() {
 	base_color = mix(base_color, emotion.rgb, clamp(emotion.a * emotion_strength, 0.0, 1.0));
 
 	float lid = clamp(feature.g, 0.0, 1.0);
-	float es_ramp = texture(eyeshadow_texture, vec2(lid, 0.5)).r;
+	// Eyeshadow/hairshadow ramps are vertical in R (Unity V). Godot V=0 is the top.
+	float es_ramp = texture(eyeshadow_texture, vec2(0.5, 1.0 - lid)).r;
 	base_color = mix(base_color, mix(base_color, eyeshadow_color.rgb, es_ramp), lid * eyeshadow_strength);
 
 	float n_dot_v = clamp(dot(geom_normal, normalize(VIEW)), 0.0, 1.0);
@@ -252,7 +274,7 @@ void fragment() {
 	base_color *= mix(vec3(1.0), sss_color.rgb, sss_weight);
 
 	float hs_u = clamp(1.0 - UV.y + hair_shadow_offset, 0.0, 1.0);
-	hair_shadow = mix(1.0, texture(hairshadow_texture, vec2(hs_u, 0.5)).r, hair_shadow_strength * face_mask);
+	hair_shadow = mix(1.0, texture(hairshadow_texture, vec2(0.5, hs_u)).r, hair_shadow_strength * face_mask);
 
 	vec3 light_color = pow(base_color, vec3(albedo_strength));
 	vec3 dark_color = light_color * albedo_dark_strength;

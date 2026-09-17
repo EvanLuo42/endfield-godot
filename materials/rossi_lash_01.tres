@@ -1,4 +1,4 @@
-[gd_resource type="ShaderMaterial" format=3 uid="uid://c4rossiface01"]
+[gd_resource type="ShaderMaterial" format=3 uid="uid://c4rossilash01"]
 
 [ext_resource type="Shader" uid="uid://bsjavsov1nids" path="res://shaders/toon_face.gdshader" id="1_face"]
 [ext_resource type="Texture2D" uid="uid://dg85jlau4gha" path="res://textures/T_actor_wulfa_face_01_D.png" id="2_d"]
@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://d0df2srhwofis" path="res://textures/T_actor_wulfa_matcap_01_D.png" id="12_mc"]
 
 [resource]
-render_priority = 0
+render_priority = 2
 shader = ExtResource("1_face")
 shader_parameter/diffuse_texture = ExtResource("2_d")
 shader_parameter/sdf_texture = ExtResource("3_sdf")
@@ -57,18 +57,18 @@ shader_parameter/eyeshadow_color = Color(0.55, 0.32, 0.34, 1)
 shader_parameter/eyeshadow_strength = 0.12
 shader_parameter/emotion_index = 0
 shader_parameter/emotion_strength = 0.22
-shader_parameter/hair_shadow_strength = 0.35
+shader_parameter/hair_shadow_strength = 0.0
 shader_parameter/hair_shadow_offset = 0.0
 shader_parameter/lip_emission_color = Color(0.85, 0.28, 0.32, 1)
-shader_parameter/lip_emission_strength = 0.45
-shader_parameter/matcap_strength = 0.12
+shader_parameter/lip_emission_strength = 0.0
+shader_parameter/matcap_strength = 0.08
 shader_parameter/diffuse_strength = 0.95
-shader_parameter/specular_strength = 0.28
+shader_parameter/specular_strength = 0.2
 shader_parameter/rim_color = Color(1, 0.48, 0.4, 1)
-shader_parameter/rim_strength = 0.16
+shader_parameter/rim_strength = 0.1
 shader_parameter/rim_power = 3.2
 shader_parameter/shadow_strength = 0.85
 shader_parameter/shadow_floor = 0.24
-shader_parameter/hair_punch_through = 0.0
+shader_parameter/hair_punch_through = 0.005
 shader_parameter/overlay_near = 1.6
 shader_parameter/overlay_far = 4.0

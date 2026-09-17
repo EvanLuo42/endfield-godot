@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://5h113foaqlfs"]
+
+[ext_resource type="Shader" uid="uid://bknxajqnvrfis" path="res://shaders/toon_eye_shadow.gdshader" id="1_sh"]
+[ext_resource type="Texture2D" uid="uid://c56e2xrrwol8q" path="res://textures/T_actor_common_eyeshadow_01_M.png" id="2_ramp"]
+
+[resource]
+render_priority = 2
+shader = ExtResource("1_sh")
+shader_parameter/shadow_ramp = ExtResource("2_ramp")
+shader_parameter/shadow_color = Color(0.28, 0.12, 0.14, 1)
+shader_parameter/shadow_strength = 0.7
+shader_parameter/invert_v = true
+shader_parameter/facing_gate = 0.08
+shader_parameter/hair_punch_through = 0.004
+shader_parameter/overlay_near = 1.6
+shader_parameter/overlay_far = 4.0

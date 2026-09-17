@@ -36,7 +36,7 @@ camera_attributes = SubResource("CameraAttributesPractical_main")
 compositor = SubResource("Compositor_ragbo")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1651045702]
-transform = Transform3D(0.29070225, -0.46970332, 0.8335892, 0, 0.87121373, 0.49090374, -0.9568136, -0.14270681, 0.2532638, 2.0534842, 2.0643005, 2.0835497)
+transform = Transform3D(0.9854079, -0.070584714, 0.15488404, 0, 0.9099611, 0.41469318, -0.1702095, -0.40864193, 0.8966829, 2.0534842, 2.0643005, 2.0835497)
 light_energy = 2.0
 shadow_enabled = true
 directional_shadow_blend_splits = true
@@ -44,7 +44,7 @@ directional_shadow_max_distance = 20.0
 directional_shadow_pancake_size = 5.0
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1291030263]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 1.305)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.71, 1.045)
 environment = ExtResource("2_nxogm")
 current = true
 fov = 45.0
