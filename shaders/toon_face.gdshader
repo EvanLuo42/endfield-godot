@@ -62,8 +62,17 @@ uniform float emotion_strength : hint_range(0.0, 1.0, 0.01) = 0.22;
 uniform float hair_shadow_strength : hint_range(0.0, 1.0, 0.01) = 0.0;
 uniform float hair_shadow_offset : hint_range(-1.0, 1.0, 0.01) = 0.0;
 uniform float hair_shadow_light_influence : hint_range(0.0, 0.25, 0.005) = 0.08;
-uniform float face_normal_flatten : hint_range(0.0, 1.0, 0.01) = 0.32;
-uniform float face_detail_shadow_strength : hint_range(0.0, 1.0, 0.01) = 0.22;
+// The SDF owns the broad face lighting. Keep the normal nearly head-facing so
+// view darkening and the custom rim cannot re-sculpt the nose and eye sockets.
+uniform float face_normal_flatten : hint_range(0.0, 1.0, 0.01) = 0.85;
+// SSS has its own normal: enough curvature survives at the silhouette, while
+// the center of the face remains clean under backlight.
+uniform float face_sss_flatten : hint_range(0.0, 1.0, 0.01) = 0.88;
+// Optional geometric detail is reserved for the non-SDF seam/neck region.
+uniform float face_detail_shadow_strength : hint_range(0.0, 1.0, 0.01) = 0.0;
+// Eye whites and other non-skin pixels live on the face mesh but are excluded
+// by feature.r. They use a stable low-light value instead of physical N.L.
+uniform float non_skin_face_fill : hint_range(0.0, 1.0, 0.01) = 0.72;
 uniform vec4 lip_emission_color : source_color = vec4(0.85, 0.28, 0.32, 1.0);
 uniform float lip_emission_strength : hint_range(0.0, 4.0, 0.01) = 0.45;
 uniform float matcap_strength : hint_range(0.0, 2.0, 0.01) = 0.12;
@@ -90,7 +99,9 @@ varying vec3 darkest_to_light_ratio;
 varying vec3 head_forward_ws;
 varying vec3 head_right_ws;
 varying vec3 spec_normal_view;
+varying vec3 rim_normal_view;
 varying float surface_ao;
+varying float face_area_mask;
 varying float face_mask;
 varying float skin_mask;
 varying float lip_mask;
@@ -257,13 +268,18 @@ void fragment() {
 	vec3 geom_normal = normalize(NORMAL);
 	vec3 head_forward_view = normalize((VIEW_MATRIX * vec4(head_forward_ws, 0.0)).xyz);
 	spec_normal_view = normalize(mix(geom_normal, head_forward_view, flatten_specular));
+	rim_normal_view = geom_normal;
 
 	skin_mask = clamp(feature.r, 0.0, 1.0);
-	face_mask = clamp(1.0 - color_mask.g, 0.0, 1.0) * skin_mask;
+	// color_mask.g describes the whole facial sheet; feature.r only identifies
+	// skin within it. Keeping these masks separate prevents the eye whites from
+	// falling back to ordinary mesh lighting at the edge of the skin mask.
+	face_area_mask = clamp(1.0 - color_mask.g, 0.0, 1.0);
+	face_mask = face_area_mask * skin_mask;
 	rim_mask = clamp(color_mask.a, 0.0, 1.0);
 	lip_highlight = highlight;
 	lip_mask = clamp(highlight * 8.0, 0.0, 1.0);
-	NORMAL = normalize(mix(geom_normal, head_forward_view, face_normal_flatten * face_mask));
+	NORMAL = normalize(mix(geom_normal, head_forward_view, face_normal_flatten * face_area_mask));
 
 	vec3 base_color = clamp(diffuse_sample.rgb, vec3(0.0), vec3(1.0));
 
@@ -275,7 +291,12 @@ void fragment() {
 	float es_ramp = texture(eyeshadow_texture, vec2(0.5, 1.0 - lid)).r;
 	base_color = mix(base_color, mix(base_color, eyeshadow_color.rgb, es_ramp), lid * eyeshadow_strength);
 
-	float n_dot_v = clamp(dot(geom_normal, normalize(VIEW)), 0.0, 1.0);
+	vec3 sss_normal = normalize(mix(
+		geom_normal,
+		head_forward_view,
+		face_sss_flatten * face_mask
+	));
+	float n_dot_v = clamp(dot(sss_normal, normalize(VIEW)), 0.0, 1.0);
 	float sss_no_v = n_dot_v * 0.85 + 0.15;
 	float sss_weight = clamp(sss_area * (1.0 - sss_no_v), 0.0, 1.0) * sss_strength * face_mask;
 	base_color *= mix(vec3(1.0), sss_color.rgb, sss_weight);
@@ -311,6 +332,7 @@ void fragment() {
 void light() {
 	vec3 normal = normalize(NORMAL);
 	vec3 spec_normal = normalize(spec_normal_view);
+	vec3 rim_normal = normalize(rim_normal_view);
 	vec3 light_direction = normalize(LIGHT);
 	vec3 view_direction = normalize(VIEW);
 	vec3 light_ws = normalize((INV_VIEW_MATRIX * vec4(light_direction, 0.0)).xyz);
@@ -320,8 +342,16 @@ void light() {
 	float shading = LIGHT_IS_DIRECTIONAL
 		? mix(half_lambert, sdf_lit, face_mask * sdf_strength)
 		: half_lambert;
+	float non_skin_face_mask = face_area_mask * (1.0 - skin_mask);
+	if (LIGHT_IS_DIRECTIONAL) {
+		shading = mix(shading, max(shading, non_skin_face_fill), non_skin_face_mask);
+	}
+	// Never multiply geometric N.L back over the SDF face. Doing so makes the
+	// nose, philtrum and eye sockets pop out in backlight. The residual term is
+	// only for the neck/face seam where ordinary mesh lighting is still wanted.
 	float detail_lit = smoothstep(0.34, 0.66, half_lambert);
-	shading *= mix(1.0, mix(0.72, 1.0, detail_lit), face_detail_shadow_strength * face_mask);
+	float geometric_detail_weight = face_detail_shadow_strength * (1.0 - face_area_mask);
+	shading *= mix(1.0, mix(0.72, 1.0, detail_lit), geometric_detail_weight);
 	shading *= hair_shadow;
 
 	vec4 ramp = sample_diff_ramp(rd_texture, shading);
@@ -330,7 +360,10 @@ void light() {
 	float nof_ramp = sample_diff_ramp(rd_texture, nof_coordinate).a;
 	float nof_weight = mix(1.0, nof_ramp, view_darkening_strength);
 
-	float raw_scene_shadow = LIGHT_IS_DIRECTIONAL ? clamp(ATTENUATION, 0.0, 1.0) : 1.0;
+	// Endfield's face mask decouples the SDF-lit face from the hard scene/self
+	// shadow. Neck and ears retain the native shadow map through (1-face_mask).
+	float native_scene_shadow = LIGHT_IS_DIRECTIONAL ? clamp(ATTENUATION, 0.0, 1.0) : 1.0;
+	float raw_scene_shadow = mix(native_scene_shadow, 1.0, face_area_mask);
 	float scene_shadow = smoothstep(
 		shadow_center - shadow_softness,
 		shadow_center + shadow_softness,
@@ -362,9 +395,11 @@ void light() {
 		normal, view_direction, light_direction, ALBEDO, specular_occlusion * face_mask
 	) * LIGHT_COLOR * light_attenuation / PI;
 
-	float fresnel = pow(clamp(1.0 - max(dot(normal, view_direction), 0.0), 0.0, 1.0), rim_power);
+	// Rim coverage follows the real silhouette normal, independently of the
+	// flattened diffuse normal, so flattening the face does not erase its edge.
+	float fresnel = pow(clamp(1.0 - max(dot(rim_normal, view_direction), 0.0), 0.0, 1.0), rim_power);
 	float rim = fresnel * mix(0.25, 1.0, rim_mask) * rim_strength * face_mask;
-	float rim_light = smoothstep(-0.35, 0.65, dot(normal, light_direction));
+	float rim_light = smoothstep(-0.35, 0.65, dot(rim_normal, light_direction));
 	SPECULAR_LIGHT += rim_color.rgb * rim * mix(0.3, 1.0, rim_light)
 		* LIGHT_COLOR * light_attenuation * specular_occlusion / PI;
 

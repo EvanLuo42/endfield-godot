@@ -36,7 +36,7 @@ effect_callback_type = 4
 needs_motion_vectors = false
 needs_normal_roughness = true
 script = ExtResource("8_depth_rim")
-rim_light_view = Vector3(0.30375132, 0.41469327, 0.8577673)
+rim_light_view = Vector3(-1.5910268e-07, 0.41469324, 0.9099613)
 
 [sub_resource type="CompositorEffect" id="CompositorEffect_bloom"]
 resource_local_to_scene = false
@@ -87,7 +87,7 @@ camera_attributes = SubResource("CameraAttributesPractical_main")
 compositor = SubResource("Compositor_ragbo")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1651045702]
-transform = Transform3D(0.94264144, -0.13842742, 0.3037513, 0, 0.9099611, 0.41469318, -0.33380684, -0.390907, 0.85776716, 2.0534842, 2.0643005, 2.0835497)
+transform = Transform3D(0.99999994, 7.2507255e-08, -1.5910267e-07, 0, 0.9099611, 0.41469318, 1.7484554e-07, -0.41469318, 0.90996116, 2.0534842, 2.0643005, 2.0835497)
 light_color = Color(1, 0.95, 0.91, 1)
 light_energy = 1.65
 shadow_enabled = true
@@ -106,7 +106,7 @@ face_material = ExtResource("10_face")
 depth_rim_effect = SubResource("CompositorEffect_depth_rim")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1291030263]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.635, 1.04)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.705, 1.08)
 environment = ExtResource("2_nxogm")
 current = true
 fov = 45.0

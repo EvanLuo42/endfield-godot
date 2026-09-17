@@ -7,7 +7,7 @@
 render_priority = 0
 shader = ExtResource("1_outline")
 shader_parameter/outline_color = Color(0.045, 0.028, 0.032, 1)
-shader_parameter/outline_width = 2.10000003129252
+shader_parameter/outline_width = 1.15000001713638
 shader_parameter/normal_z_keep = 0.18
 shader_parameter/z_bias = 0.0012
 shader_parameter/max_ndc_offset = 0.01

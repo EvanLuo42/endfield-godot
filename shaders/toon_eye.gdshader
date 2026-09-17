@@ -53,10 +53,10 @@ uniform float diffuse_strength : hint_range(0.0, 2.0, 0.01) = 0.85;
 uniform float specular_strength : hint_range(0.0, 4.0, 0.01) = 0.55;
 uniform float cornea_roughness : hint_range(0.02, 1.0, 0.001) = 0.12;
 uniform float cornea_f0 : hint_range(0.0, 0.16, 0.001) = 0.04;
-uniform float shadow_strength : hint_range(0.0, 1.0, 0.01) = 0.55;
-uniform float shadow_floor : hint_range(0.0, 1.0, 0.01) = 0.62;
-uniform float shadow_center : hint_range(0.0, 1.0, 0.01) = 0.5;
-uniform float shadow_softness : hint_range(0.01, 0.5, 0.01) = 0.24;
+// The original eye path uses its authored eye-dark overlay instead of the
+// scene shadow map. This floor approximates its low-light/top-light branch and
+// keeps the iris readable when the sun is behind the character.
+uniform float directional_diffuse_floor : hint_range(0.0, 1.0, 0.01) = 0.58;
 
 
 float iris_circle_mask(vec2 uv) {
@@ -148,24 +148,20 @@ void light() {
 	vec3 light_direction = normalize(LIGHT);
 	vec3 view_direction = normalize(VIEW);
 
-	float half_lambert = clamp(dot(normal, light_direction) * 0.5 + 0.5, 0.0, 1.0);
-	float raw_scene_shadow = LIGHT_IS_DIRECTIONAL ? clamp(ATTENUATION, 0.0, 1.0) : 1.0;
-	float scene_shadow = smoothstep(
-		shadow_center - shadow_softness,
-		shadow_center + shadow_softness,
-		raw_scene_shadow
-	);
-	float shadow_weight = mix(1.0, scene_shadow, shadow_strength);
-	float light_attenuation = LIGHT_IS_DIRECTIONAL
-		? mix(shadow_floor, 1.0, shadow_weight)
-		: ATTENUATION;
+	float raw_half_lambert = clamp(dot(normal, light_direction) * 0.5 + 0.5, 0.0, 1.0);
+	float half_lambert = LIGHT_IS_DIRECTIONAL
+		? mix(directional_diffuse_floor, 1.0, raw_half_lambert)
+		: raw_half_lambert;
+	// Directional hard shadows on the eyeball stack badly with the authored
+	// eyelid overlay. Local lights still use their normal distance attenuation.
+	float light_attenuation = LIGHT_IS_DIRECTIONAL ? 1.0 : ATTENUATION;
 
 	vec3 diffuse_brdf = ALBEDO * half_lambert * diffuse_strength / PI;
 	DIFFUSE_LIGHT += diffuse_brdf * LIGHT_COLOR * light_attenuation;
 
 	float ggx_term = stylized_ggx(normal, view_direction, light_direction, ROUGHNESS);
 	SPECULAR_LIGHT += vec3(cornea_f0) * ggx_term
-		* LIGHT_COLOR * light_attenuation * shadow_weight
+		* LIGHT_COLOR * light_attenuation
 		* SPECULAR_AMOUNT * specular_strength / PI;
 
 	float n_dot_v = clamp(dot(normal, view_direction), 0.0, 1.0);
