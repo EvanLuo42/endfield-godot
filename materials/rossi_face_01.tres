@@ -1,0 +1,71 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://c4rossiface01"]
+
+[ext_resource type="Shader" uid="uid://bsjavsov1nids" path="res://shaders/toon_face.gdshader" id="1_face"]
+[ext_resource type="Texture2D" uid="uid://dg85jlau4gha" path="res://textures/T_actor_wulfa_face_01_D.png" id="2_d"]
+[ext_resource type="Texture2D" uid="uid://bhr6d6scoils" path="res://textures/T_actor_common_female_face_01_SDF.png" id="3_sdf"]
+[ext_resource type="Texture2D" uid="uid://bimi0moeoq2vm" path="res://textures/T_actor_common_female_face_01_ST.png" id="4_st"]
+[ext_resource type="Texture2D" uid="uid://ddy5ir827m0cc" path="res://textures/T_actor_common_female_face_01_cm_M.png" id="5_cm"]
+[ext_resource type="Texture2D" uid="uid://clluhogo55npy" path="res://textures/T_actor_common_face_01_hl_M.png" id="6_hl"]
+[ext_resource type="Texture2D" uid="uid://uvnwuaejytfk" path="res://textures/T_actor_common_face_01_RD.png" id="7_rd"]
+[ext_resource type="Texture2D" uid="uid://caxa5jw1fjye8" path="res://textures/T_actor_common_femaleskincolor01_lut_D.png" id="8_lut"]
+[ext_resource type="Texture2D" uid="uid://bfiujbw0y55an" path="res://textures/T_actor_common_female_emotion_atlas_01_D.png" id="9_emo"]
+[ext_resource type="Texture2D" uid="uid://c56e2xrrwol8q" path="res://textures/T_actor_common_eyeshadow_01_M.png" id="10_es"]
+[ext_resource type="Texture2D" uid="uid://bjb801ald40ey" path="res://textures/T_actor_common_hairshadow_01_M.png" id="11_hs"]
+[ext_resource type="Texture2D" uid="uid://d0df2srhwofis" path="res://textures/T_actor_wulfa_matcap_01_D.png" id="12_mc"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_face")
+shader_parameter/diffuse_texture = ExtResource("2_d")
+shader_parameter/sdf_texture = ExtResource("3_sdf")
+shader_parameter/feature_texture = ExtResource("4_st")
+shader_parameter/color_mask_texture = ExtResource("5_cm")
+shader_parameter/highlight_texture = ExtResource("6_hl")
+shader_parameter/rd_texture = ExtResource("7_rd")
+shader_parameter/diffuse_lut_texture = ExtResource("8_lut")
+shader_parameter/emotion_atlas_texture = ExtResource("9_emo")
+shader_parameter/eyeshadow_texture = ExtResource("10_es")
+shader_parameter/hairshadow_texture = ExtResource("11_hs")
+shader_parameter/matcap_texture = ExtResource("12_mc")
+shader_parameter/diffuse_tint = Color(1, 1, 1, 1)
+shader_parameter/albedo_strength = 1.0
+shader_parameter/albedo_dark_strength = 1.0
+shader_parameter/albedo_dark_saturation = 1.0
+shader_parameter/darkest_layer_strength = 0.62
+shader_parameter/apply_lut_enabled = true
+shader_parameter/lut_strength = 1.0
+shader_parameter/ramp_tint_strength = 1.0
+shader_parameter/view_darkening_strength = 0.18
+shader_parameter/head_forward_os = Vector3(0, 0, 1)
+shader_parameter/head_right_os = Vector3(1, 0, 0)
+shader_parameter/sdf_uv_offset = Vector2(0, 0)
+shader_parameter/sdf_uv_scale = Vector2(1, 1)
+shader_parameter/flip_sdf_uv = false
+shader_parameter/sdf_strength = 1.0
+shader_parameter/sdf_softness = 0.045
+shader_parameter/sdf_threshold_bias = 0.0
+shader_parameter/sdf_front_fill = 1.0
+shader_parameter/sdf_toon_amount = 0.72
+shader_parameter/rembrandt_strength = 0.35
+shader_parameter/flatten_specular = 0.65
+shader_parameter/sss_color = Color(1, 0.42, 0.36, 1)
+shader_parameter/sss_strength = 0.16
+shader_parameter/sss_area = 1.0
+shader_parameter/skin_roughness = 0.52
+shader_parameter/skin_reflectivity = 1.0
+shader_parameter/eyeshadow_color = Color(0.55, 0.32, 0.34, 1)
+shader_parameter/eyeshadow_strength = 0.12
+shader_parameter/emotion_index = 0
+shader_parameter/emotion_strength = 0.22
+shader_parameter/hair_shadow_strength = 0.0
+shader_parameter/hair_shadow_offset = 0.0
+shader_parameter/lip_emission_color = Color(0.85, 0.28, 0.32, 1)
+shader_parameter/lip_emission_strength = 0.45
+shader_parameter/matcap_strength = 0.12
+shader_parameter/diffuse_strength = 0.95
+shader_parameter/specular_strength = 0.28
+shader_parameter/rim_color = Color(1, 0.48, 0.4, 1)
+shader_parameter/rim_strength = 0.16
+shader_parameter/rim_power = 3.2
+shader_parameter/shadow_strength = 0.85
+shader_parameter/shadow_floor = 0.24

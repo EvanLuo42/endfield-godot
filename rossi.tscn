@@ -6,9 +6,13 @@
 [ext_resource type="Material" uid="uid://ds3gqd40w7u1r" path="res://materials/rossi_cloth_02.tres" id="3_vmrp7"]
 [ext_resource type="Material" uid="uid://c4rossihair01" path="res://materials/rossi_hair_01.tres" id="4_hair"]
 [ext_resource type="Material" uid="uid://c4rossihair02" path="res://materials/rossi_hair_02.tres" id="5_hair"]
+[ext_resource type="Material" uid="uid://c4rossiface01" path="res://materials/rossi_face_01.tres" id="6_face"]
 
 [node name="Rossi" unique_id=1729544501 instance=ExtResource("1_djms0")]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+
+[node name="面-0" parent="Skeleton3D" parent_id_path=PackedInt32Array(1478361764) index="0" unique_id=1212715675]
+surface_material_override/0 = ExtResource("6_face")
 
 [node name="面-7" parent="Skeleton3D" parent_id_path=PackedInt32Array(1478361764) index="7" unique_id=1224329854]
 surface_material_override/0 = ExtResource("4_hair")
@@ -27,3 +31,6 @@ surface_material_override/0 = ExtResource("2_vpuqf")
 
 [node name="面-13" parent="Skeleton3D" parent_id_path=PackedInt32Array(1478361764) index="13" unique_id=652139696]
 surface_material_override/0 = ExtResource("5_hair")
+
+[node name="面-14" parent="Skeleton3D" parent_id_path=PackedInt32Array(1478361764) index="14" unique_id=1109985304]
+visible = false

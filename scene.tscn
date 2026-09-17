@@ -36,7 +36,7 @@ camera_attributes = SubResource("CameraAttributesPractical_main")
 compositor = SubResource("Compositor_ragbo")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1651045702]
-transform = Transform3D(1, 0, 0, 0, 0.6989956, 0.715126, 0, -0.715126, 0.6989956, 2.0534842, 2.0643005, 2.0835497)
+transform = Transform3D(0.29070225, -0.46970332, 0.8335892, 0, 0.87121373, 0.49090374, -0.9568136, -0.14270681, 0.2532638, 2.0534842, 2.0643005, 2.0835497)
 light_energy = 2.0
 shadow_enabled = true
 directional_shadow_blend_splits = true
