@@ -7,8 +7,15 @@
 [ext_resource type="Script" uid="uid://lihpgj2a6fv" path="res://shaders/endfield_bloom_effect.gd" id="5_bloom"]
 [ext_resource type="Script" uid="uid://do1nwkxe5ycit" path="res://scripts/endfield_key_light.gd" id="6_keylight"]
 [ext_resource type="Material" uid="uid://df6xx3jmriexk" path="res://materials/rossi_hair_shadow.tres" id="7_hair_shadow"]
+[ext_resource type="Script" uid="uid://blngtxqxlveju" path="res://shaders/endfield_depth_rim_effect.gd" id="8_depth_rim"]
+[ext_resource type="Script" uid="uid://dw2famcsnv3bp" path="res://shaders/endfield_sharpen_effect.gd" id="9_sharpen"]
+[ext_resource type="Material" uid="uid://c4rossiface01" path="res://materials/rossi_face_01.tres" id="10_face"]
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_main"]
+dof_blur_far_enabled = true
+dof_blur_far_distance = 2.2
+dof_blur_far_transition = 2.5
+dof_blur_amount = 0.06
 
 [sub_resource type="CompositorEffect" id="CompositorEffect_outline"]
 resource_local_to_scene = false
@@ -20,6 +27,16 @@ needs_normal_roughness = true
 script = ExtResource("4_outline")
 outline_color = Color(0, 0, 0, 1)
 strength = 0.57
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_depth_rim"]
+resource_local_to_scene = false
+resource_name = "Endfield Depth Rim"
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = true
+script = ExtResource("8_depth_rim")
+rim_light_view = Vector3(0.30375132, 0.41469327, 0.8577673)
 
 [sub_resource type="CompositorEffect" id="CompositorEffect_bloom"]
 resource_local_to_scene = false
@@ -41,8 +58,17 @@ needs_normal_roughness = false
 script = ExtResource("3_tonemap")
 exposure_ev = 0.9499999999999992
 
+[sub_resource type="CompositorEffect" id="CompositorEffect_sharpen"]
+resource_local_to_scene = false
+resource_name = "Post-TAA Adaptive Sharpen"
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("9_sharpen")
+
 [sub_resource type="Compositor" id="Compositor_ragbo"]
-compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_outline"), SubResource("CompositorEffect_bloom"), SubResource("CompositorEffect_tonemap")])
+compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_outline"), SubResource("CompositorEffect_depth_rim"), SubResource("CompositorEffect_bloom"), SubResource("CompositorEffect_tonemap"), SubResource("CompositorEffect_sharpen")])
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.18, 0.19, 0.22, 1)
@@ -76,9 +102,11 @@ directional_shadow_max_distance = 8.0
 directional_shadow_pancake_size = 5.0
 script = ExtResource("6_keylight")
 hair_shadow_material = ExtResource("7_hair_shadow")
+face_material = ExtResource("10_face")
+depth_rim_effect = SubResource("CompositorEffect_depth_rim")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1291030263]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.715, 1.015)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.635, 1.04)
 environment = ExtResource("2_nxogm")
 current = true
 fov = 45.0

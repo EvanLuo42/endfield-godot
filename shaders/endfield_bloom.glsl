@@ -25,6 +25,9 @@ layout(push_constant, std430) uniform Params {
 	float vignette_power;
 	float vignette_roundness;
 	vec4 vignette_color;
+	float anamorphic_ratio;
+	float bloom_scatter;
+	vec2 reserved;
 } params;
 
 const float MODE_PREFILTER = 0.0;
@@ -126,6 +129,8 @@ void main() {
 
 	vec2 uv = (vec2(pixel) + vec2(0.5)) / params.dst_size;
 	vec2 src_texel = vec2(1.0) / max(params.src_size, vec2(1.0));
+	float horizontal_stretch = mix(1.0, 4.0, clamp(params.anamorphic_ratio, 0.0, 1.0));
+	src_texel *= vec2(horizontal_stretch, 1.0) * max(params.bloom_scatter, 0.25);
 
 	if (params.mode < 0.5) {
 		if (textureLod(depth_texture, uv, 0.0).r <= SKY_DEPTH) {

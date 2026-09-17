@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://bnb0uwltd4nsn"
+path="res://.godot/imported/endfield_sharpen.glsl-1ae4e64ee9e422e21cc3444d75a441ae.res"
+
+[deps]
+
+source_file="res://shaders/endfield_sharpen.glsl"
+dest_files=["res://.godot/imported/endfield_sharpen.glsl-1ae4e64ee9e422e21cc3444d75a441ae.res"]
+
+[params]
+

@@ -4,6 +4,8 @@ extends DirectionalLight3D
 ## Keeps screen-space bangs projection aligned with the actual key light.
 ## DirectionalLight3D emits down local -Z, so +Z points toward the light source.
 @export var hair_shadow_material: ShaderMaterial
+@export var face_material: ShaderMaterial
+@export var depth_rim_effect: CompositorEffect
 @export var sync_hair_shadow := true
 
 
@@ -21,6 +23,12 @@ func _sync_hair_shadow_direction() -> void:
 		return
 	var light_direction := global_transform.basis.z.normalized()
 	var current: Variant = hair_shadow_material.get_shader_parameter("light_dir_ws")
-	if current is Vector3 and (current as Vector3).distance_squared_to(light_direction) < 0.0000001:
-		return
-	hair_shadow_material.set_shader_parameter("light_dir_ws", light_direction)
+	if not (current is Vector3) or (current as Vector3).distance_squared_to(light_direction) >= 0.0000001:
+		hair_shadow_material.set_shader_parameter("light_dir_ws", light_direction)
+	if face_material:
+		face_material.set_shader_parameter("key_light_dir_ws", light_direction)
+	if depth_rim_effect:
+		var camera := get_viewport().get_camera_3d()
+		if camera and camera.is_inside_tree():
+			var light_view := camera.global_transform.basis.inverse() * light_direction
+			depth_rim_effect.set("rim_light_view", light_view.normalized())

@@ -59,3 +59,6 @@ shader_parameter/shadow_softness = 0.16
 shader_parameter/rim_color = Color(0.55, 0.7, 1, 1)
 shader_parameter/rim_strength = 0.18
 shader_parameter/rim_power = 2.8
+shader_parameter/transmission_color = Color(1, 0.42, 0.24, 1)
+shader_parameter/transmission_strength = 0.22
+shader_parameter/transmission_power = 2.2

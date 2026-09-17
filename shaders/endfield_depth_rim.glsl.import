@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://c6colft803ssg"
+path="res://.godot/imported/endfield_depth_rim.glsl-ac8cdc53b9d60dbba5747352c78874d5.res"
+
+[deps]
+
+source_file="res://shaders/endfield_depth_rim.glsl"
+dest_files=["res://.godot/imported/endfield_depth_rim.glsl-ac8cdc53b9d60dbba5747352c78874d5.res"]
+
+[params]
+

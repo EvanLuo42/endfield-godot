@@ -59,6 +59,9 @@ uniform float shadow_softness : hint_range(0.01, 0.5, 0.01) = 0.16;
 uniform vec4 rim_color : source_color = vec4(0.55, 0.7, 1.0, 1.0);
 uniform float rim_strength : hint_range(0.0, 2.0, 0.01) = 0.18;
 uniform float rim_power : hint_range(0.5, 8.0, 0.1) = 2.8;
+uniform vec4 transmission_color : source_color = vec4(1.0, 0.42, 0.24, 1.0);
+uniform float transmission_strength : hint_range(0.0, 2.0, 0.01) = 0.22;
+uniform float transmission_power : hint_range(0.5, 8.0, 0.1) = 2.2;
 
 varying vec3 dark_to_light_ratio;
 varying vec3 darkest_to_light_ratio;
@@ -248,4 +251,11 @@ void light() {
 	float rim = rim_fresnel * mix(0.35, 1.0, rim_light) * rim_strength;
 	SPECULAR_LIGHT += rim_color.rgb * rim * LIGHT_COLOR * light_attenuation
 		* specular_occlusion / PI;
+
+	float back_lit = pow(max(dot(-normal, light_direction), 0.0), transmission_power);
+	float view_edge = pow(clamp(1.0 - dot(normal, view_direction), 0.0, 1.0), 1.5);
+	float transmission = back_lit * mix(0.35, 1.0, view_edge)
+		* transmission_strength * surface_ao;
+	DIFFUSE_LIGHT += transmission_color.rgb * ALBEDO * transmission
+		* LIGHT_COLOR * mix(0.45, 1.0, shadow_weight) / PI;
 }

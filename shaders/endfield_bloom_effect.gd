@@ -24,6 +24,8 @@ var _buffer_views := 0
 @export_range(0.0, 4.0, 0.01) var threshold := 1.0
 @export_range(0.0, 1.0, 0.01) var knee := 0.5
 @export_range(0.0, 2.0, 0.01) var intensity := 0.32
+@export_range(0.0, 1.0, 0.01) var anamorphic_ratio := 0.28
+@export_range(0.5, 1.5, 0.01) var bloom_scatter := 0.92
 
 @export_category("Vignette")
 @export_range(0.0, 1.0, 0.01) var vignette_strength := 0.42
@@ -138,6 +140,7 @@ func _push_constants(
 		mode, threshold_value, knee_value, intensity_value,
 		vignette[0], vignette[1], vignette[2], vignette[3],
 		vignette[4], vignette[5], vignette[6], vignette[7],
+		vignette[8], vignette[9], 0.0, 0.0,
 	])
 
 
@@ -197,6 +200,7 @@ func _render_callback(callback_type: int, render_data: RenderData) -> void:
 	var frame_vignette := PackedFloat32Array([
 		vignette_strength, vignette_intensity, vignette_power, vignette_roundness,
 		vignette_color.r, vignette_color.g, vignette_color.b, vignette_color.a,
+		anamorphic_ratio, bloom_scatter,
 	])
 	_parameter_mutex.unlock()
 

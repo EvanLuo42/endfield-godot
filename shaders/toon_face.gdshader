@@ -35,6 +35,7 @@ group_uniforms Head;
 // Object-space head basis. Rossi / Unity FBX faces +Z in Godot.
 uniform vec3 head_forward_os = vec3(0.0, 0.0, 1.0);
 uniform vec3 head_right_os = vec3(1.0, 0.0, 0.0);
+uniform vec3 key_light_dir_ws = vec3(0.3, 0.4, 0.86);
 uniform vec2 sdf_uv_offset = vec2(0.0);
 uniform vec2 sdf_uv_scale = vec2(1.0);
 uniform bool flip_sdf_uv = false;
@@ -60,6 +61,9 @@ uniform int emotion_index : hint_range(0, 3, 1) = 0;
 uniform float emotion_strength : hint_range(0.0, 1.0, 0.01) = 0.22;
 uniform float hair_shadow_strength : hint_range(0.0, 1.0, 0.01) = 0.0;
 uniform float hair_shadow_offset : hint_range(-1.0, 1.0, 0.01) = 0.0;
+uniform float hair_shadow_light_influence : hint_range(0.0, 0.25, 0.005) = 0.08;
+uniform float face_normal_flatten : hint_range(0.0, 1.0, 0.01) = 0.32;
+uniform float face_detail_shadow_strength : hint_range(0.0, 1.0, 0.01) = 0.22;
 uniform vec4 lip_emission_color : source_color = vec4(0.85, 0.28, 0.32, 1.0);
 uniform float lip_emission_strength : hint_range(0.0, 4.0, 0.01) = 0.45;
 uniform float matcap_strength : hint_range(0.0, 2.0, 0.01) = 0.12;
@@ -259,6 +263,7 @@ void fragment() {
 	rim_mask = clamp(color_mask.a, 0.0, 1.0);
 	lip_highlight = highlight;
 	lip_mask = clamp(highlight * 8.0, 0.0, 1.0);
+	NORMAL = normalize(mix(geom_normal, head_forward_view, face_normal_flatten * face_mask));
 
 	vec3 base_color = clamp(diffuse_sample.rgb, vec3(0.0), vec3(1.0));
 
@@ -275,7 +280,9 @@ void fragment() {
 	float sss_weight = clamp(sss_area * (1.0 - sss_no_v), 0.0, 1.0) * sss_strength * face_mask;
 	base_color *= mix(vec3(1.0), sss_color.rgb, sss_weight);
 
-	float hs_u = clamp(1.0 - UV.y + hair_shadow_offset, 0.0, 1.0);
+	float light_elevation = clamp(key_light_dir_ws.y, -1.0, 1.0);
+	float directional_hair_offset = (0.35 - light_elevation) * hair_shadow_light_influence;
+	float hs_u = clamp(1.0 - UV.y + hair_shadow_offset + directional_hair_offset, 0.0, 1.0);
 	hair_shadow = mix(1.0, texture(hairshadow_texture, vec2(0.5, hs_u)).r, hair_shadow_strength * face_mask);
 
 	vec3 light_color = pow(base_color, vec3(albedo_strength));
@@ -313,6 +320,8 @@ void light() {
 	float shading = LIGHT_IS_DIRECTIONAL
 		? mix(half_lambert, sdf_lit, face_mask * sdf_strength)
 		: half_lambert;
+	float detail_lit = smoothstep(0.34, 0.66, half_lambert);
+	shading *= mix(1.0, mix(0.72, 1.0, detail_lit), face_detail_shadow_strength * face_mask);
 	shading *= hair_shadow;
 
 	vec4 ramp = sample_diff_ramp(rd_texture, shading);
