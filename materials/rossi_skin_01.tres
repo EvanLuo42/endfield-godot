@@ -1,0 +1,38 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://by1t1nuvewjhm"]
+
+[ext_resource type="Shader" uid="uid://c12206fv85rxy" path="res://shaders/toon_skin.gdshader" id="1_a08hb"]
+[ext_resource type="Texture2D" uid="uid://bfag3gs1e3b2r" path="res://textures/T_actor_wulfa_body_01_D.png" id="2_diffuse"]
+[ext_resource type="Texture2D" uid="uid://c3ajfrfaagdiv" path="res://textures/T_actor_common_femaleskincolor03_lut_D.png" id="2_oid1u"]
+[ext_resource type="Texture2D" uid="uid://bv5jd4mn6mf1s" path="res://textures/T_actor_wulfa_body_01_N.png" id="3_normal"]
+[ext_resource type="Texture2D" uid="uid://bqeuii5kuh4kr" path="res://textures/T_actor_common_body_01_RD.png" id="4_rd"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_a08hb")
+shader_parameter/diffuse_texture = ExtResource("2_diffuse")
+shader_parameter/normal_texture = ExtResource("3_normal")
+shader_parameter/rd_texture = ExtResource("4_rd")
+shader_parameter/diffuse_lut_texture = ExtResource("2_oid1u")
+shader_parameter/diffuse_tint = Color(1, 1, 1, 1)
+shader_parameter/normal_strength = 1.0
+shader_parameter/flip_normal_y = false
+shader_parameter/albedo_strength = 1.0
+shader_parameter/albedo_dark_strength = 1.0
+shader_parameter/albedo_dark_saturation = 1.0
+shader_parameter/darkest_layer_strength = 0.6
+shader_parameter/apply_lut_enabled = true
+shader_parameter/lut_strength = 1.0
+shader_parameter/ramp_tint_strength = 1.0
+shader_parameter/view_darkening_strength = 0.25
+shader_parameter/sss_color = Color(1, 0.42, 0.36, 1)
+shader_parameter/sss_strength = 0.12
+shader_parameter/sss_area = 1.0
+shader_parameter/skin_roughness = 0.55
+shader_parameter/skin_reflectivity = 1.0
+shader_parameter/diffuse_strength = 0.9
+shader_parameter/specular_strength = 0.25
+shader_parameter/rim_color = Color(1, 0.45, 0.38, 1)
+shader_parameter/rim_strength = 0.08
+shader_parameter/rim_power = 3.0
+shader_parameter/shadow_strength = 0.9
+shader_parameter/shadow_floor = 0.22

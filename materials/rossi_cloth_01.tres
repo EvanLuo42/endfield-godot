@@ -1,0 +1,35 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://c238g7t61226c"]
+
+[ext_resource type="Shader" uid="uid://byklvqf5w7vr" path="res://shaders/toon_surface.gdshader" id="1_etvyc"]
+[ext_resource type="Texture2D" uid="uid://d3bc7tkvgimvb" path="res://textures/T_actor_wulfa_cloth_01_D.png" id="2_h5urk"]
+[ext_resource type="Texture2D" uid="uid://fae6jvvtofho" path="res://textures/T_actor_common_cloth_lut_01_D.png" id="3_xret6"]
+[ext_resource type="Texture2D" uid="uid://dfyq550c5icw2" path="res://textures/T_actor_common_cloth_04_RD.png" id="4_h5urk"]
+[ext_resource type="Texture2D" uid="uid://ddypsle47swv0" path="res://textures/T_actor_wulfa_cloth_01_N.png" id="5_ev4dx"]
+[ext_resource type="Texture2D" uid="uid://2xjhimcv4vg4" path="res://textures/T_actor_wulfa_cloth_01_P.png" id="6_p1fr1"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_etvyc")
+shader_parameter/base_color_texture = ExtResource("2_h5urk")
+shader_parameter/normal_texture = ExtResource("5_ev4dx")
+shader_parameter/packed_texture = ExtResource("6_p1fr1")
+shader_parameter/diffuse_ramp_texture = ExtResource("4_h5urk")
+shader_parameter/diffuse_lut_texture = ExtResource("3_xret6")
+shader_parameter/base_color_tint = Color(1, 1, 1, 1)
+shader_parameter/normal_strength = 1.0
+shader_parameter/flip_normal_y = false
+shader_parameter/albedo_strength = 1.0
+shader_parameter/albedo_dark_strength = 1.0
+shader_parameter/albedo_dark_saturation = 1.0
+shader_parameter/darkest_layer_strength = 0.55
+shader_parameter/lut_strength = 1.0
+shader_parameter/ramp_tint_strength = 1.0
+shader_parameter/view_darkening_strength = 0.25
+shader_parameter/minimum_roughness = 0.088388
+shader_parameter/diffuse_strength = 0.9
+shader_parameter/specular_strength = 0.65
+shader_parameter/dielectric_f0 = 0.04
+shader_parameter/reflectivity_strength = 1.0
+shader_parameter/shadow_strength = 0.9
+shader_parameter/shadow_floor = 0.15
+shader_parameter/environment_specular = 0.05

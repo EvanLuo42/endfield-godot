@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://d03cvlvppr2fx"]
+
+[ext_resource type="PackedScene" uid="uid://dknp8ytjeoul6" path="res://Rossi.fbx" id="1_djms0"]
+[ext_resource type="Material" uid="uid://by1t1nuvewjhm" path="res://materials/rossi_skin_01.tres" id="2_e30rv"]
+[ext_resource type="Material" uid="uid://c238g7t61226c" path="res://materials/rossi_cloth_01.tres" id="2_vpuqf"]
+[ext_resource type="Material" uid="uid://ds3gqd40w7u1r" path="res://materials/rossi_cloth_02.tres" id="3_vmrp7"]
+[ext_resource type="Material" uid="uid://c4rossihair01" path="res://materials/rossi_hair_01.tres" id="4_hair"]
+[ext_resource type="Material" uid="uid://c4rossihair02" path="res://materials/rossi_hair_02.tres" id="5_hair"]
+
+[node name="Rossi" unique_id=1729544501 instance=ExtResource("1_djms0")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+
+[node name="面-7" parent="Skeleton3D" parent_id_path=PackedInt32Array(1478361764) index="7" unique_id=1224329854]
+surface_material_override/0 = ExtResource("4_hair")
+
+[node name="面-9" parent="Skeleton3D" parent_id_path=PackedInt32Array(1478361764) index="9" unique_id=1706373347]
+surface_material_override/0 = ExtResource("2_e30rv")
+
+[node name="面-10" parent="Skeleton3D" parent_id_path=PackedInt32Array(1478361764) index="10" unique_id=1866460710]
+surface_material_override/0 = ExtResource("2_vpuqf")
+
+[node name="面-11" parent="Skeleton3D" parent_id_path=PackedInt32Array(1478361764) index="11" unique_id=968396858]
+surface_material_override/0 = ExtResource("3_vmrp7")
+
+[node name="面-12" parent="Skeleton3D" parent_id_path=PackedInt32Array(1478361764) index="12" unique_id=462815946]
+surface_material_override/0 = ExtResource("2_vpuqf")
+
+[node name="面-13" parent="Skeleton3D" parent_id_path=PackedInt32Array(1478361764) index="13" unique_id=652139696]
+surface_material_override/0 = ExtResource("5_hair")

@@ -1,0 +1,53 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://c4rossihair02"]
+
+[ext_resource type="Shader" uid="uid://bq7hairkajiya" path="res://shaders/toon_hair.gdshader" id="1_hair"]
+[ext_resource type="Texture2D" uid="uid://cgp6bfnsfgrnu" path="res://textures/T_actor_wulfa_hair_02_D.png" id="2_d"]
+[ext_resource type="Texture2D" uid="uid://dp2g8500fdtup" path="res://textures/T_actor_wulfa_hair_02_N.png" id="3_n"]
+[ext_resource type="Texture2D" uid="uid://b06qnpeo5u66m" path="res://textures/T_actor_wulfa_hair_02_P.png" id="4_p"]
+[ext_resource type="Texture2D" uid="uid://dj82mlrjq4r46" path="res://textures/T_actor_common_hair_01_RD.png" id="5_rd"]
+[ext_resource type="Texture2D" uid="uid://bdvi8cv532rlx" path="res://textures/T_actor_common_hair_08_RS.png" id="6_rs"]
+[ext_resource type="Texture2D" uid="uid://6bj2vva6a6e" path="res://textures/T_actor_common_hairst_01_ST.png" id="7_st"]
+[ext_resource type="Texture2D" uid="uid://cbm0ssfxke2uo" path="res://textures/T_actor_common_hairline_03_M.png" id="9_hairline"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_hair")
+shader_parameter/base_color_texture = ExtResource("2_d")
+shader_parameter/normal_texture = ExtResource("3_n")
+shader_parameter/packed_texture = ExtResource("4_p")
+shader_parameter/diffuse_ramp_texture = ExtResource("5_rd")
+shader_parameter/specular_ramp_texture = ExtResource("6_rs")
+shader_parameter/shift_texture = ExtResource("7_st")
+shader_parameter/jitter_texture = ExtResource("7_st")
+shader_parameter/hairline_texture = ExtResource("9_hairline")
+shader_parameter/base_color_tint = Color(1, 1, 1, 1)
+shader_parameter/normal_strength = 0.45
+shader_parameter/flip_normal_y = false
+shader_parameter/albedo_strength = 1.0
+shader_parameter/albedo_dark_strength = 1.0
+shader_parameter/albedo_dark_saturation = 1.0
+shader_parameter/darkest_layer_strength = 0.5
+shader_parameter/ramp_tint_strength = 1.0
+shader_parameter/view_darkening_strength = 0.25
+shader_parameter/minimum_roughness = 0.6
+shader_parameter/alpha_scissor = 0.35
+shader_parameter/use_tangent_as_fiber = true
+shader_parameter/primary_shift = -0.1
+shader_parameter/secondary_shift = 0.18
+shader_parameter/shift_strength = 0.25
+shader_parameter/jitter_strength = 0.1
+shader_parameter/jitter_tiling = 4.0
+shader_parameter/hairline_strength = 0.12
+shader_parameter/hairline_tiling = 8.0
+shader_parameter/use_split_spec_normal = false
+shader_parameter/spec_ramp_mix = 1.0
+shader_parameter/primary_exponent = 32.0
+shader_parameter/secondary_exponent = 10.0
+shader_parameter/primary_intensity = 1.2
+shader_parameter/secondary_intensity = 0.4
+shader_parameter/specular_color = Color(1, 0.97, 0.94, 1)
+shader_parameter/diffuse_strength = 0.9
+shader_parameter/specular_strength = 1.2
+shader_parameter/reflectivity_strength = 1.0
+shader_parameter/shadow_strength = 0.9
+shader_parameter/shadow_floor = 0.18

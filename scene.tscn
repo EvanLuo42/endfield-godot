@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://1ln04qaytetj"]
+
+[ext_resource type="PackedScene" uid="uid://d03cvlvppr2fx" path="res://rossi.tscn" id="1_ulcgi"]
+[ext_resource type="Environment" uid="uid://cjsyrmyxtn2o7" path="res://world_env.tres" id="2_nxogm"]
+[ext_resource type="Script" uid="uid://cw6ur2o2ca5km" path="res://shaders/endfield_tonemap_effect.gd" id="3_tonemap"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_main"]
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_tonemap"]
+resource_local_to_scene = false
+resource_name = "Endfield LogC Tonemap"
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("3_tonemap")
+exposure_ev = 0.9499999999999993
+
+[sub_resource type="Compositor" id="Compositor_ragbo"]
+compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_tonemap")])
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.18, 0.19, 0.22, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_floor"]
+material = SubResource("StandardMaterial3D_floor")
+size = Vector2(4, 4)
+
+[node name="Node3D" type="Node3D" unique_id=598240671]
+
+[node name="Rossi" parent="." unique_id=1729544501 instance=ExtResource("1_ulcgi")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2032263388]
+environment = ExtResource("2_nxogm")
+camera_attributes = SubResource("CameraAttributesPractical_main")
+compositor = SubResource("Compositor_ragbo")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1651045702]
+transform = Transform3D(1, 0, 0, 0, 0.6989956, 0.715126, 0, -0.715126, 0.6989956, 2.0534842, 2.0643005, 2.0835497)
+light_energy = 2.0
+shadow_enabled = true
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 20.0
+directional_shadow_pancake_size = 5.0
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1291030263]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 1.305)
+environment = ExtResource("2_nxogm")
+current = true
+fov = 45.0
+far = 100.0
+
+[node name="ShadowReceiver" type="MeshInstance3D" parent="." unique_id=1564055688]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.002, 0)
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_floor")

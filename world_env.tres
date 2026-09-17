@@ -1,0 +1,16 @@
+[gd_resource type="Environment" format=3 uid="uid://cjsyrmyxtn2o7"]
+
+[ext_resource type="Texture2D" uid="uid://butvfebdxorpo" path="res://meadow_2_2k.hdr" id="1_ragbo"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_3253y"]
+panorama = ExtResource("1_ragbo")
+
+[sub_resource type="Sky" id="Sky_nxogm"]
+sky_material = SubResource("PanoramaSkyMaterial_3253y")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_nxogm")
+ambient_light_sky_contribution = 0.0
+sdfgi_enabled = true
+adjustment_brightness = 0.86

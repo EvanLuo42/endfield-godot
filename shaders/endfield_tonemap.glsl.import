@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://8hw3b18w6owt"
+path="res://.godot/imported/endfield_tonemap.glsl-1a34dfd9d751d36c427b0acac6e9b476.res"
+
+[deps]
+
+source_file="res://shaders/endfield_tonemap.glsl"
+dest_files=["res://.godot/imported/endfield_tonemap.glsl-1a34dfd9d751d36c427b0acac6e9b476.res"]
+
+[params]
+
