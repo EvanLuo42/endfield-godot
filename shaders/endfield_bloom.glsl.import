@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://b7r1n1j6s5tn5"
+path="res://.godot/imported/endfield_bloom.glsl-ca8f0dad1a985ec94b4f9ae9dae5fef3.res"
+
+[deps]
+
+source_file="res://shaders/endfield_bloom.glsl"
+dest_files=["res://.godot/imported/endfield_bloom.glsl-ca8f0dad1a985ec94b4f9ae9dae5fef3.res"]
+
+[params]
+

@@ -6,9 +6,11 @@
 [ext_resource type="Texture2D" uid="uid://fae6jvvtofho" path="res://textures/T_actor_common_cloth_lut_01_D.png" id="3_ra6no"]
 [ext_resource type="Texture2D" uid="uid://c8dmwqs40p0yh" path="res://textures/T_actor_common_cloth_03_RD.png" id="4_4i5mf"]
 [ext_resource type="Texture2D" uid="uid://b0dn1ohurdq2b" path="res://textures/T_actor_wulfa_cloth_02_P.png" id="6_yklno"]
+[ext_resource type="Material" path="res://materials/rossi_outline_cloth_02.tres" id="7_outline"]
 
 [resource]
 render_priority = 0
+next_pass = ExtResource("7_outline")
 shader = ExtResource("1_we68l")
 shader_parameter/base_color_texture = ExtResource("2_0h1lk")
 shader_parameter/normal_texture = ExtResource("3_1pfbj")

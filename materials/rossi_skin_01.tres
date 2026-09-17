@@ -5,9 +5,11 @@
 [ext_resource type="Texture2D" uid="uid://c3ajfrfaagdiv" path="res://textures/T_actor_common_femaleskincolor03_lut_D.png" id="2_oid1u"]
 [ext_resource type="Texture2D" uid="uid://bv5jd4mn6mf1s" path="res://textures/T_actor_wulfa_body_01_N.png" id="3_normal"]
 [ext_resource type="Texture2D" uid="uid://bqeuii5kuh4kr" path="res://textures/T_actor_common_body_01_RD.png" id="4_rd"]
+[ext_resource type="Material" path="res://materials/rossi_outline_skin.tres" id="5_outline"]
 
 [resource]
 render_priority = 0
+next_pass = ExtResource("5_outline")
 shader = ExtResource("1_a08hb")
 shader_parameter/diffuse_texture = ExtResource("2_diffuse")
 shader_parameter/normal_texture = ExtResource("3_normal")

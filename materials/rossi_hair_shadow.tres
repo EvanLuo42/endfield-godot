@@ -2,9 +2,11 @@
 
 [ext_resource type="Shader" uid="uid://bknxctum7yb6s" path="res://shaders/toon_hair_shadow.gdshader" id="1_sh"]
 [ext_resource type="Texture2D" uid="uid://65hs3pxb8fqn" path="res://textures/T_actor_wulfa_hair_01_D.png" id="2_d"]
+[ext_resource type="Material" path="res://materials/rossi_outline_hair_01.tres" id="3_outline"]
 
 [resource]
 render_priority = 1
+next_pass = ExtResource("3_outline")
 shader = ExtResource("1_sh")
 shader_parameter/base_color_texture = ExtResource("2_d")
 shader_parameter/shadow_color = Color(0.38, 0.22, 0.22, 1)

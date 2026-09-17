@@ -12,9 +12,11 @@
 [ext_resource type="Texture2D" uid="uid://c56e2xrrwol8q" path="res://textures/T_actor_common_eyeshadow_01_M.png" id="10_es"]
 [ext_resource type="Texture2D" uid="uid://bjb801ald40ey" path="res://textures/T_actor_common_hairshadow_01_M.png" id="11_hs"]
 [ext_resource type="Texture2D" uid="uid://d0df2srhwofis" path="res://textures/T_actor_wulfa_matcap_01_D.png" id="12_mc"]
+[ext_resource type="Material" path="res://materials/rossi_outline_face.tres" id="13_outline"]
 
 [resource]
 render_priority = 0
+next_pass = ExtResource("13_outline")
 shader = ExtResource("1_face")
 shader_parameter/diffuse_texture = ExtResource("2_d")
 shader_parameter/sdf_texture = ExtResource("3_sdf")

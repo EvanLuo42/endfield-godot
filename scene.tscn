@@ -4,6 +4,7 @@
 [ext_resource type="Environment" uid="uid://cjsyrmyxtn2o7" path="res://world_env.tres" id="2_nxogm"]
 [ext_resource type="Script" uid="uid://cw6ur2o2ca5km" path="res://shaders/endfield_tonemap_effect.gd" id="3_tonemap"]
 [ext_resource type="Script" uid="uid://db0bgft7mspp1" path="res://shaders/toon_outline_effect.gd" id="4_outline"]
+[ext_resource type="Script" uid="uid://lihpgj2a6fv" path="res://shaders/endfield_bloom_effect.gd" id="5_bloom"]
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_main"]
 
@@ -18,6 +19,16 @@ script = ExtResource("4_outline")
 outline_color = Color(0, 0, 0, 1)
 strength = 0.57
 
+[sub_resource type="CompositorEffect" id="CompositorEffect_bloom"]
+resource_local_to_scene = false
+resource_name = "Endfield Bloom + Vignette"
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("5_bloom")
+intensity = 0.19
+
 [sub_resource type="CompositorEffect" id="CompositorEffect_tonemap"]
 resource_local_to_scene = false
 resource_name = "Endfield LogC Tonemap"
@@ -29,7 +40,7 @@ script = ExtResource("3_tonemap")
 exposure_ev = 0.9499999999999992
 
 [sub_resource type="Compositor" id="Compositor_ragbo"]
-compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_outline"), SubResource("CompositorEffect_tonemap")])
+compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_outline"), SubResource("CompositorEffect_bloom"), SubResource("CompositorEffect_tonemap")])
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.18, 0.19, 0.22, 1)

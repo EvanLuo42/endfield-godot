@@ -8,9 +8,11 @@
 [ext_resource type="Texture2D" uid="uid://bdvi8cv532rlx" path="res://textures/T_actor_common_hair_08_RS.png" id="6_rs"]
 [ext_resource type="Texture2D" uid="uid://6bj2vva6a6e" path="res://textures/T_actor_common_hairst_01_ST.png" id="7_st"]
 [ext_resource type="Texture2D" uid="uid://cbm0ssfxke2uo" path="res://textures/T_actor_common_hairline_03_M.png" id="9_hairline"]
+[ext_resource type="Material" path="res://materials/rossi_outline_hair_02.tres" id="10_outline"]
 
 [resource]
 render_priority = 0
+next_pass = ExtResource("10_outline")
 shader = ExtResource("1_hair")
 shader_parameter/base_color_texture = ExtResource("2_d")
 shader_parameter/normal_texture = ExtResource("3_n")

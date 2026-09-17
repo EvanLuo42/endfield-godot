@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bhboered2s27w"]
+
+[ext_resource type="Shader" uid="uid://c6dnmta1hhlng" path="res://shaders/toon_outline.gdshader" id="1_outline"]
+[ext_resource type="Texture2D" uid="uid://cgp6bfnsfgrnu" path="res://textures/T_actor_wulfa_hair_02_D.png" id="2_d"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_outline")
+shader_parameter/outline_color = Color(0.045, 0.028, 0.032, 1)
+shader_parameter/outline_width = 1.1
+shader_parameter/normal_z_keep = 0.16
+shader_parameter/z_bias = 0.0012
+shader_parameter/max_ndc_offset = 0.01
+shader_parameter/clip_texture = ExtResource("2_d")
+shader_parameter/use_alpha_clip = true
+shader_parameter/alpha_scissor = 0.35
+shader_parameter/use_width_mask = false
+shader_parameter/width_mask_channel = 0
+shader_parameter/invert_width_mask = false
